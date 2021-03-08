@@ -168,10 +168,10 @@ def download_llvm_preconfigured(rctx):
         exec_result = rctx.execute(
             [
                 _python(rctx),
-                rctx.path(rctx.attr.llvm_release_name),
+                rctx.path(rctx.attr._llvm_release_name),
                 llvm_version,
             ],
-            working_directory = _sysroot_path(rctx),
+            working_directory = _sysroot_path(rctx)[0],
         )
         if exec_result.return_code:
             fail("Failed to detect host OS version: \n%s\n%s" % (exec_result.stdout, exec_result.stderr))
