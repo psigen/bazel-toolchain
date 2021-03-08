@@ -41,7 +41,8 @@ def _windows(llvm_version):
 def _linux(llvm_version):
     arch = platform.machine()
 
-    release_file_path = "/etc/os-release"
+    # Assume the working directory is already at the sysroot.
+    release_file_path = "etc/os-release"
     with open(release_file_path) as release_file:
         lines = release_file.readlines()
         info = dict()
