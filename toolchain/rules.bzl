@@ -55,7 +55,7 @@ llvm_toolchain = repository_rule(
             default = False,
             doc = "Use absolute paths in the toolchain. Avoids sandbox overhead.",
         ),
-        "_llvm_release_name": attr.label(
+        "llvm_release_name": attr.label(
             default = "@com_grail_bazel_toolchain//toolchain/tools:llvm_release_name.py",
             allow_single_file = True,
             doc = "Python module to output LLVM release name for the current OS.",

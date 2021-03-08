@@ -12,6 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+load(
+    "@com_grail_bazel_toolchain//toolchain/internal:sysroot.bzl",
+    _sysroot_path = "sysroot_path",
+)
+
 # If a new LLVM version is missing from this list, please add the shasum here
 # and send a PR on github. To compute the shasum block, you can use the script
 # utils/llvm_checksums.sh
@@ -160,11 +165,14 @@ def download_llvm_preconfigured(rctx):
         mirror_base += [rctx.attr.llvm_mirror]
 
     if rctx.attr.distribution == "auto":
-        exec_result = rctx.execute([
-            _python(rctx),
-            rctx.path(rctx.attr._llvm_release_name),
-            llvm_version,
-        ])
+        exec_result = rctx.execute(
+            [
+                _python(rctx),
+                rctx.path(rctx.attr.llvm_release_name),
+                llvm_version,
+            ],
+            working_directory = _sysroot_path(rctx),
+        )
         if exec_result.return_code:
             fail("Failed to detect host OS version: \n%s\n%s" % (exec_result.stdout, exec_result.stderr))
         if exec_result.stderr:
